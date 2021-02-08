@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='flowroute-messaging-python',
-    version='0.0.0',
+    version='0.1.0',
     license='MIT',
     description='Flowroute\'s Messaging API',
     author='Flowroute Developers',

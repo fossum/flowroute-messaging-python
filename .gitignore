@@ -1,2 +1,11 @@
+
+# Run artifacts
 *.pyc
+
+# Local secrets
 *.env
+
+# Python package artifacts.
+*.egg-info
+build/
+dist/
