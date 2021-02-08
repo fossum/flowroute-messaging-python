@@ -19,6 +19,8 @@ setup(
         'Operating System :: POSIX',
         'Operating System :: Microsoft :: Windows',
         'Programming Language :: Python',
+        'Programming Language :: Python :: 3 :: Only',
+        'Topic :: Communications :: Telephony'
     ],
     keywords=[
         'messaging', 'sms', 'telephony', 'sip', 'api'
