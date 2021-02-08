@@ -2,13 +2,13 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name='flowroute-messaging-python',
+    name='flowroute-messaging-fossum',
     version='0.1.0',
     license='MIT',
-    description='Flowroute\'s Messaging API',
+    description='Flowroute\'s Messaging API (Fossum edition).',
     author='Flowroute Developers',
-    author_email='developer@flowroute.com',
-    url='https://github.com/flowroute/flowroute-messaging-python',
+    author_email='fossum.eric@gmail.com',
+    url='https://github.com/fossum/flowroute-messaging-python',
     packages=find_packages('.'),
     zip_safe=False,
     classifiers=[
