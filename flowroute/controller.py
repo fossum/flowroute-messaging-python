@@ -7,7 +7,7 @@
 import requests
 
 from FlowrouteMessagingLib.APIHelper import APIHelper
-from FlowrouteMessagingLib.Configuration import Configuration
+from FlowrouteMessagingLib.configuration import Configuration
 from FlowrouteMessagingLib.APIException import APIException
 
 

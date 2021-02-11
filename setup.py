@@ -3,10 +3,10 @@ from setuptools import setup, find_packages
 
 setup(
     name='flowroute-messaging-fossum',
-    version='0.1.0',
+    version='0.2.0',
     license='MIT',
     description='Flowroute\'s Messaging API (Fossum edition).',
-    author='Flowroute Developers',
+    author='Eric Fossum',
     author_email='fossum.eric@gmail.com',
     url='https://github.com/fossum/flowroute-messaging-python',
     packages=find_packages('.'),
