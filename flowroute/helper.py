@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
-"""
-   FlowrouteMessagingLib.APIHelper
+"""Flowroute.Helper
 
-    Copyright Flowroute, Inc. 2016
+Copyright Flowroute, Inc. 2016
 """
+
 import jsonpickle
 import re
 
 
-class APIHelper:
-    """
-    A Helper Class for various functions associated with API Calls.
+class Helper:
+    """A Helper Class for various functions associated with API Calls.
 
     This class contains static methods for operations that need to be
     performed during API requests. All of the methods inside this class are
@@ -19,9 +18,8 @@ class APIHelper:
     """
 
     @classmethod
-    def json_serialize(cls, obj):
-        """
-        JSON Serialization of a given object.
+    def json_serialize(cls, obj) -> str:
+        """JSON Serialization of a given object.
 
         Args:
             obj (object): The object to serialize.
@@ -54,9 +52,8 @@ class APIHelper:
         return jsonpickle.encode(obj, False)
 
     @classmethod
-    def json_deserialize(cls, json):
-        """
-        JSON Deserialization of a given string.
+    def json_deserialize(cls, json: str) -> dict:
+        """JSON deserialization of a given string.
 
         Args:
             json (str): The JSON serialized string to deserialize.
@@ -72,7 +69,7 @@ class APIHelper:
         return jsonpickle.decode(json)
 
     @classmethod
-    def append_url_with_template_parameters(cls, url, parameters):
+    def append_url_with_template_parameters(cls, url: str, parameters: dict) -> str:
         """
         Replaces template parameters in the given url.
 
@@ -108,7 +105,7 @@ class APIHelper:
         return url
 
     @classmethod
-    def append_url_with_query_parameters(cls, url, parameters):
+    def append_url_with_query_parameters(cls, url: str, parameters: dict) -> str:
         """
         Appends the given set of parameters to the given query string.
 
@@ -153,7 +150,7 @@ class APIHelper:
         return url
 
     @classmethod
-    def clean_url(cls, url):
+    def clean_url(cls, url: str) -> str:
         """
         Validates and processes the given query Url to clean empty slashes.
 
@@ -178,9 +175,8 @@ class APIHelper:
         return protocol + query_url
 
     @classmethod
-    def form_encode(cls, obj, instanceName):
-        """
-        Encodes a model in a form-encoded manner such as person[Name]
+    def form_encode(cls, obj, instanceName: str) -> dict:
+        """Encodes a model in a form-encoded manner such as person[Name].
 
         Args:
             obj (object): The given Object to form encode.
@@ -192,7 +188,7 @@ class APIHelper:
 
         """
         # Resolve the names first
-        value = APIHelper.resolve_name(obj)
+        value = Helper.resolve_name(obj)
         retval = dict()
 
         if value is None:
@@ -204,13 +200,13 @@ class APIHelper:
                 # Loop through each item in the list and add it by number
                 i = 0
                 for entry in value[item]:
-                    retval.update(APIHelper.form_encode(
+                    retval.update(Helper.form_encode(
                         entry, instanceName + "[" + item + "][" + str(
                             i) + "]"))
                     i += 1
             elif isinstance(value[item], dict):
                 # Loop through each item in the dictionary and add it
-                retval.update(APIHelper.form_encode(value[item], instanceName +
+                retval.update(Helper.form_encode(value[item], instanceName +
                                                     "[" + item + "]"))
             else:
                 # Add the current item
@@ -219,9 +215,8 @@ class APIHelper:
         return retval
 
     @classmethod
-    def resolve_names(cls, obj, names, retval):
-        """
-        Resolves parameters from their Model names to their API names.
+    def resolve_names(cls, obj, names: dict, retval: dict) -> dict:
+        """Resolve parameters from their Model names to their API names.
 
         Args:
             obj (object): The given Object to resolve names for.
@@ -243,23 +238,22 @@ class APIHelper:
                 # Loop through each item
                 retval[names[name]] = list()
                 for item in value:
-                    retval[names[name]].append(APIHelper.resolve_name(item))
+                    retval[names[name]].append(Helper.resolve_name(item))
             elif isinstance(value, dict):
                 # Loop through each item
                 retval[names[name]] = dict()
                 for key in value:
-                    retval[names[name]][key] = APIHelper.resolve_name(value[
+                    retval[names[name]][key] = Helper.resolve_name(value[
                         key])
             else:
-                retval[names[name]] = APIHelper.resolve_name(value)
+                retval[names[name]] = Helper.resolve_name(value)
 
         # Return the result
         return retval
 
     @classmethod
     def resolve_name(cls, value):
-        """
-        Resolves name for a given object
+        """Resolves name for a given object.
 
         If the object needs to be recursively resolved, this method will
         perform that recursive call.

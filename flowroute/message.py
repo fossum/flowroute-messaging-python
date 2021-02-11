@@ -1,25 +1,24 @@
 # -*- coding: utf-8 -*-
 
+"""flowroute.Message
+
+This file was automatically generated for flowroute
+by APIMATIC BETA v2.0 on 02/08/2016
 """
-   FlowrouteMessagingLib.Models.Message
 
-   This file was automatically generated for flowroute
-   by APIMATIC BETA v2.0 on 02/08/2016
-"""
-from FlowrouteMessagingLib.APIHelper import APIHelper
+from flowroute.helper import Helper
 
 
-class Message(object):
-    """
-    Implementation of the 'Message' model.
+class Message():
+    """Implementation of the 'Message' model.
 
     A simple message.
 
     Attributes:
-        to (string): Phone number in E.164 format to send a message to.
-        mfrom (string): Phone number in E.164 format where the message is sent
+        to (str): Phone number in E.164 format to send a message to.
+        mfrom (str): Phone number in E.164 format where the message is sent
             from.
-        content (string): The content of the message.
+        content (str): The content of the message.
 
     """
 
@@ -43,9 +42,8 @@ class Message(object):
                 if key in replace_names:
                     setattr(self, replace_names[key], kwargs[key])
 
-    def resolve_names(self):
-        """
-        Creates a dictionary representation of this object.
+    def resolve_names(self) -> dict:
+        """Create a dictionary representation of this object.
 
         This method converts an object to a dictionary that represents the
         format that the model should be in when passed into an API Request.
@@ -65,4 +63,4 @@ class Message(object):
 
         retval = dict()
 
-        return APIHelper.resolve_names(self, replace_names, retval)
+        return Helper.resolve_names(self, replace_names, retval)

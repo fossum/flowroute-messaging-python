@@ -1,6 +1,7 @@
 
 # Run artifacts
 *.pyc
+.coverage
 
 # Local secrets
 *.env

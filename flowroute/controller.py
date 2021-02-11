@@ -1,30 +1,29 @@
 # -*- coding: utf-8 -*-
-"""
-   FlowrouteMessagingLib.Controllers.APIController
+"""flowroute.controller
 
-    Copyright Flowroute, Inc. 2016
+Copyright Flowroute, Inc. 2016
 """
 import requests
 
-from FlowrouteMessagingLib.APIHelper import APIHelper
-from FlowrouteMessagingLib.configuration import Configuration
-from FlowrouteMessagingLib.APIException import APIException
+from flowroute.helper import Helper
+from flowroute.configuration import Configuration
+from flowroute.exception import FlowrouteException
+from flowroute.message import Message
 
 
-class APIController(object):
-    """
-    A Controller to access Endpoints in the FlowrouteMessagingLib API.
+class Controller():
+    """Controller to access Endpoints in the Flowroute API.
 
     Args:
-        username (str): Username for authentication
-        password (str): password for authentication
+        username (str): Username for authentication.
+        password (str): Password for authentication.
     """
 
     def __init__(self, username, password):
         self.__username = username
         self.__password = password
 
-    def create_message(self, message) -> dict:
+    def send_message(self, message: Message) -> dict:
         """Does a POST request to /messages.
 
         Send a message.
@@ -49,7 +48,7 @@ class APIController(object):
         query_builder += "/messages"
 
         # Validate and preprocess url
-        query_url = APIHelper.clean_url(query_builder)
+        query_url = Helper.clean_url(query_builder)
 
         # Prepare headers
         headers = {
@@ -61,19 +60,19 @@ class APIController(object):
         response = requests.post(
             url=query_url,
             headers=headers,
-            data=APIHelper.json_serialize(message),
+            data=Helper.json_serialize(message),
             auth=(self.__username, self.__password))
-        json_content = APIHelper.json_deserialize(response.content)
+        json_content = Helper.json_deserialize(response.content)
 
         # Error handling using HTTP status codes
         if response.status_code == 401:
-            raise APIException("UNAUTHORIZED", 401, json_content)
+            raise FlowrouteException("UNAUTHORIZED", 401, json_content)
 
         elif response.status_code == 403:
-            raise APIException("FORBIDDEN", 403, json_content)
+            raise FlowrouteException("FORBIDDEN", 403, json_content)
 
         elif response.status_code < 200 or response.status_code > 206:  # 200 = HTTP OK
-            raise APIException("HTTP Response Not OK", response.status_code,
+            raise FlowrouteException("HTTP Response Not OK", response.status_code,
                                json_content)
 
         return json_content
@@ -104,26 +103,28 @@ class APIController(object):
         query_builder += "/messages/{record_id}"
 
         # Process optional template parameters
-        query_builder = APIHelper.append_url_with_template_parameters(
+        query_builder = Helper.append_url_with_template_parameters(
             query_builder, {
                 "record_id": record_id,
             })
 
         # Validate and preprocess url
-        query_url = APIHelper.clean_url(query_builder)
+        query_url = Helper.clean_url(query_builder)
 
         # Prepare headers
-        headers = {"user-agent": "Flowroute Messaging SDK 1.0", }
+        headers = {
+            "user-agent": "Flowroute Messaging SDK 1.0",
+        }
 
         # Prepare and invoke the API call request to fetch the response
         response = requests.get(
             url=query_url,
             auth=(self.__username, self.__password))
-        json_content = APIHelper.json_deserialize(response.content)
+        json_content = Helper.json_deserialize(response.content)
 
         # Error handling using HTTP status codes
         if response.status_code < 200 or response.status_code > 206:  # 200 = HTTP OK
-            raise APIException("HTTP Response Not OK", response.status_code,
+            raise FlowrouteException("HTTP Response Not OK", response.status_code,
                                json_content)
 
         return json_content

@@ -16,8 +16,7 @@ import os
 import pprint
 from time import sleep
 
-from FlowrouteMessagingLib.Controllers.APIController import *
-from FlowrouteMessagingLib.Models.Message import *
+from flowroute import Controller, Message, FlowrouteException
 
 # Set up your API credentials
 # Please replace the variables in Configuration.php with your information.
@@ -30,7 +29,7 @@ to_number = os.getenv('TO_E164')
 print("Flowroute, Inc - Demo SMS Python script.\n")
 
 # Create the Controller.
-controller = APIController(username=username, password=password)
+controller = Controller(username=username, password=password)
 pprint.pprint(controller)
 
 # Build your message.
@@ -40,7 +39,7 @@ message = Message(to=to_number, from_=from_number, content='Your cool new SMS me
 try:
     response = controller.create_message(message)
     pprint.pprint(response)
-except APIException as e:
+except FlowrouteException as e:
     print("Send Error - " + str(e.response_code) + '\n')
     pprint.pprint(e.response_body['errors'])
     exit(1)        # can't continue from here
@@ -48,12 +47,16 @@ except APIException as e:
 # Get the MDR id from the response.
 mdr_id = response['data']['id']
 
+# Wait for message to register.
+# Five seconds should be enough.
+sleep(5)
+
 # Retrieve the MDR record.
 try:
     # Example MDR: 'mdr1-b334f89df8de4f8fa7ce377e06090a2e'
     mdr_record = controller.get_message_lookup(mdr_id)
     pprint.pprint(mdr_record)
-except APIException as e:
+except FlowrouteException as e:
     print("Get Error - " + str(e.response_code) + '\n')
     pprint.pprint(e.response_body['errors'])
     exit(2)
