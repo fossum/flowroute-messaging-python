@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[scripts]
+clean = "python setup.py clean --all"
+build = "python -m build"
+publish = "python -m twine upload dist/*"
+
+[packages]
+jsonpickle = "==0.7.1"
+requests = "==2.25.1"
+flowroute-messaging-python = {editable = true, path = "."}
+
+[dev-packages]
+build = "*"
+pytest = "*"
+twine = "*"
+pytest-cov = "*"
+
+[requires]
+python_version = "3.7"
